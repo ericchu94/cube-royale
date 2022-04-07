@@ -30,14 +30,19 @@ pub struct PlayersProperties {
     pub duration: Duration,
 }
 
+mod names;
+
+use names::names;
+
 #[function_component]
 pub fn Players(props: &PlayersProperties) -> Html {
     let state = props.state;
     let duration = props.duration;
     let players = use_state(|| {
+        let names = names();
         (0..99)
             .map(|i| {
-                let name = format!("P{}", i + 1);
+                let name = names[i].to_owned();
                 Player {
                     name,
                     state: Default::default(),
@@ -46,6 +51,18 @@ pub fn Players(props: &PlayersProperties) -> Html {
             .collect::<Vec<Player>>()
     });
     let durations = use_state(|| [Duration::default(); 99]);
+    let round = use_state(||0);
+
+    {
+        let round = round.clone();
+        use_effect_with_deps(move |_| {
+            if state == TimerState::Pending {
+                round.set(*round + 1);
+            }
+
+            || {}
+        }, state);
+    }
 
     {
         let durations = durations.clone();
@@ -170,7 +187,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
         </style>
         <div>
             <div>
-                {status}
+                {"Round "}{*round}{": "}{status}
             </div>
             <div class={"container"}>
             {(*players).iter().enumerate().map(|(i, player)| {
