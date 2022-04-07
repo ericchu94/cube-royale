@@ -90,7 +90,7 @@ pub fn App() -> Html {
         <>
             <Scramble state={*state} />
             <Timer state={*state} duration={(*duration).clone()} />
-            <Players />
+            <Players state={*state} duration={*duration} />
         </>
     }
 }
