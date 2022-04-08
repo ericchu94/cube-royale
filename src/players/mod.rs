@@ -95,6 +95,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
     {
         let players = players.clone();
         let durations = durations.clone();
+        let round = round.clone();
         use_effect_with_deps(
             move |_| {
                 let mut v = (*players).clone();
@@ -102,6 +103,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
                     for player in v.iter_mut() {
                         player.state = PlayerState::Alive;
                     }
+                    round.set(0);
                 } else {
                     for (i, p) in v
                         .iter_mut()
@@ -166,7 +168,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
         }
         .player {
             border: 1px solid black;
-            width: 70px;
+            width: 80px;
             text-align: center;
             margin: 1px;
             opacity: 30%;
