@@ -23,8 +23,8 @@ use TimerState::*;
 #[function_component]
 pub fn App() -> Html {
     let state = use_state(|| Idle);
-    let start_time = use_state(|| Instant::now());
-    let duration = use_state(|| Duration::default());
+    let start_time = use_state(Instant::now);
+    let duration = use_state(Duration::default);
 
     {
         let state = state.clone();
@@ -89,7 +89,7 @@ pub fn App() -> Html {
     html! {
         <>
             <Scramble state={*state} />
-            <Timer state={*state} duration={(*duration).clone()} />
+            <Timer state={*state} duration={*duration} />
             <Players state={*state} duration={*duration} />
         </>
     }

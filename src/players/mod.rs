@@ -69,7 +69,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
         use_effect_with_deps(
             move |_| {
                 if state == TimerState::Pending {
-                    let mut v = (*durations).clone();
+                    let mut v = *durations;
                     let mut rng = thread_rng();
                     for duration in v.iter_mut() {
                         *duration = Duration::from_millis(rng.gen_range(4000..30000));
@@ -144,7 +144,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
         .filter(|p| p.state == PlayerState::Passed)
         .count();
     let status = if state == TimerState::Idle && won {
-        format!("Winner!")
+        "Winner!".to_string()
     } else if state == TimerState::Idle && lost {
         format!("Eliminated. #{}", passed + 1)
     } else {
