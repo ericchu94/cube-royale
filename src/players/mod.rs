@@ -34,6 +34,10 @@ mod names;
 
 use names::names;
 
+fn display_duration(d: Duration) -> String {
+    format!("{}.{:03}", d.as_secs(), d.subsec_millis())
+}
+
 #[function_component]
 pub fn Players(props: &PlayersProperties) -> Html {
     let state = props.state;
@@ -208,7 +212,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
                 <div>
                     {
                         if state == TimerState::Idle || d <= duration {
-                            format!("{}:{:03}", d.as_secs(), d.subsec_millis())
+                            display_duration(d)
                         } else {
                             String::from("?")
                         }
@@ -220,5 +224,18 @@ pub fn Players(props: &PlayersProperties) -> Html {
             </div>
         </div>
         </>
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use instant::Duration;
+
+    use super::display_duration;
+
+    #[test]
+    fn test() {
+        let d = Duration::from_millis(12345);
+        assert_eq!("12.345".to_owned(), display_duration(d));
     }
 }
