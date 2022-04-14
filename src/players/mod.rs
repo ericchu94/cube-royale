@@ -107,7 +107,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
                     for player in v.iter_mut() {
                         player.state = PlayerState::Alive;
                     }
-                    round.set(0);
+                    round.set(1);
                 } else {
                     for (i, p) in v
                         .iter_mut()
