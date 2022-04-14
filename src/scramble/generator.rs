@@ -89,7 +89,7 @@ pub fn generate_scramble() -> String {
 
     while scramble.len() < 20 {
         let m = random_move();
-        if scramble.is_empty() && scramble[scramble.len() - 1].0 == m.0 {
+        if !scramble.is_empty() && scramble[scramble.len() - 1].0 == m.0 {
             continue;
         }
         if scramble.len() > 1 && scramble[scramble.len() - 1].0.is_opposite(m.0) && scramble[scramble.len() - 2].0 == m.0 {
