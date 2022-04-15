@@ -1,3 +1,6 @@
+use std::fmt::{Formatter, Display, Result};
+use rand::prelude::*;
+use rand::distributions::Standard;
 
 #[derive(PartialEq, Clone, Copy)]
 enum Face {
@@ -8,8 +11,6 @@ enum Face {
     Left,
     Back,
 }
-
-use std::fmt::{Formatter, Display, Result};
 
 use Face::*;
 
@@ -55,8 +56,6 @@ enum Turn {
 }
 
 use Turn::*;
-use rand::prelude::*;
-use rand::distributions::Standard;
 
 impl Distribution<Turn> for Standard {
     fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Turn {
@@ -98,6 +97,12 @@ impl Display for Move {
 #[derive(PartialEq, Clone)]
 pub struct Scramble {
     moves: Vec<Move>,
+}
+
+impl Default for Scramble {
+    fn default() -> Self {
+        random()
+    }
 }
 
 impl Distribution<Scramble> for Standard {

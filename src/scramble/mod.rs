@@ -1,9 +1,9 @@
 use yew::prelude::*;
 
-mod generator;
+use crate::models::cube_royale::CubeRoyale;
+use crate::app::hooks::{use_cube_royale_context, use_scramble};
 
 use super::app::TimerState;
-use generator::generate_scramble;
 
 #[derive(Properties, PartialEq)]
 pub struct ScrambleProps {
@@ -13,15 +13,14 @@ pub struct ScrambleProps {
 #[function_component]
 pub fn Scramble(props: &ScrambleProps) -> Html {
     let state = props.state;
-
-    let scramble = use_state(String::new);
+    let mut context = use_cube_royale_context();
+    let scramble = use_scramble();
 
     {
-        let scramble = scramble.clone();
         use_effect_with_deps(
             move |_| {
                 if state == TimerState::Idle {
-                    scramble.set(generate_scramble());
+                    context.next_scramble();
                 }
                 || ()
             },
@@ -31,7 +30,7 @@ pub fn Scramble(props: &ScrambleProps) -> Html {
 
     html! {
         <div>
-            {&(*scramble)}
+            {scramble}
         </div>
     }
 }
