@@ -1,4 +1,4 @@
-use std::{rc::Rc, ops::Deref};
+use std::rc::Rc;
 
 use yew::Reducible;
 
@@ -9,7 +9,7 @@ pub enum CubeRoyaleReducibleAction {
 }
 
 #[derive(PartialEq, Clone, Default)]
-pub struct CubeRoyaleReducible(InMemoryCubeRoyale);
+pub struct CubeRoyaleReducible(pub InMemoryCubeRoyale);
 
 impl Reducible for CubeRoyaleReducible {
     type Action = CubeRoyaleReducibleAction;
@@ -21,13 +21,5 @@ impl Reducible for CubeRoyaleReducible {
             NextScramble => cube_royale.next_scramble(),
         }
         next.into()
-    }
-}
-
-impl Deref for CubeRoyaleReducible {
-    type Target = InMemoryCubeRoyale;
-
-    fn deref(&self) -> &Self::Target {
-        &self.0
     }
 }

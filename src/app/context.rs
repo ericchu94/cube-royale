@@ -16,7 +16,7 @@ impl CubeRoyale for CubeRoyaleContext {
     }
 
     fn get_scramble(&self) -> &Scramble {
-        self.0.get_scramble()
+        self.0.0.get_scramble()
     }
 }
 
