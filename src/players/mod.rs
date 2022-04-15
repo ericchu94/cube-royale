@@ -1,4 +1,3 @@
-use instant::Duration;
 use rand::prelude::*;
 use yew::prelude::*;
 
@@ -22,7 +21,7 @@ struct Player {
     state: PlayerState,
 }
 
-use crate::app::TimerState;
+use crate::{app::TimerState, models::Duration};
 
 #[derive(Properties, PartialEq)]
 pub struct PlayersProperties {
@@ -33,10 +32,6 @@ pub struct PlayersProperties {
 mod names;
 
 use names::names;
-
-fn display_duration(d: Duration) -> String {
-    format!("{}.{:03}", d.as_secs(), d.subsec_millis())
-}
 
 #[function_component]
 pub fn Players(props: &PlayersProperties) -> Html {
@@ -212,7 +207,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
                 <div>
                     {
                         if state == TimerState::Idle || d <= duration {
-                            display_duration(d)
+                            format!("{}", d)
                         } else {
                             String::from("?")
                         }
@@ -224,18 +219,5 @@ pub fn Players(props: &PlayersProperties) -> Html {
             </div>
         </div>
         </>
-    }
-}
-
-#[cfg(test)]
-mod test {
-    use instant::Duration;
-
-    use super::display_duration;
-
-    #[test]
-    fn test() {
-        let d = Duration::from_millis(12345);
-        assert_eq!("12.345".to_owned(), display_duration(d));
     }
 }

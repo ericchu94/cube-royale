@@ -1,8 +1,7 @@
 use yew::prelude::*;
 
 use super::context::{CubeRoyaleContext};
-use crate::models::scramble::Scramble;
-use crate::models::cube_royale::CubeRoyale;
+use crate::models::{CubeRoyale, Scramble};
 
 #[hook]
 pub fn use_cube_royale_context() -> CubeRoyaleContext {

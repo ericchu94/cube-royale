@@ -1,7 +1,6 @@
-use instant::Duration;
 use rand::random;
 
-use super::scramble::Scramble;
+use super::{Scramble, Duration};
 
 #[derive(PartialEq, Clone, Default)]
 pub struct InMemoryCubeRoyale {

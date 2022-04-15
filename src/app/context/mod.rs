@@ -1,6 +1,6 @@
 use yew::prelude::*;
 
-use crate::models::{cube_royale::CubeRoyale, scramble::Scramble};
+use crate::models::{CubeRoyale, Scramble, Duration};
 
 use reducer::CubeRoyaleReducible;
 use reducer::CubeRoyaleReducibleAction::*;
@@ -15,7 +15,7 @@ impl CubeRoyale for CubeRoyaleContext {
         self.0.0.get_scramble()
     }
 
-    fn complete_solve(&mut self, duration: instant::Duration) {
+    fn complete_solve(&mut self, duration: Duration) {
         self.0.dispatch(CompleteSolve { duration });
     }
 }

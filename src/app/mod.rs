@@ -2,13 +2,13 @@ use context::use_cube_royale_reducer;
 use gloo::events::EventListener;
 use gloo::timers::callback::Interval;
 use gloo::utils::document;
-use instant::{Duration, Instant};
+use instant::{Instant};
 use wasm_bindgen::JsCast;
 use web_sys::KeyboardEvent;
 use yew::prelude::*;
 
 use crate::app::context::CubeRoyaleContext;
-use crate::models::cube_royale::CubeRoyale;
+use crate::models::{CubeRoyale, Duration};
 use crate::players::Players;
 use crate::timer::Timer;
 use crate::scramble::Scramble;
@@ -90,7 +90,7 @@ pub fn App() -> Html {
         use_effect(move || {
             let interval = Interval::new(1, move || match *state {
                 Running => {
-                    duration.set(start_time.elapsed());
+                    duration.set(start_time.elapsed().into());
                 }
                 Pending => duration.set(Duration::default()),
                 _ => {}

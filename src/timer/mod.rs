@@ -1,7 +1,6 @@
-use instant::Duration;
 use yew::prelude::*;
 
-use crate::app::TimerState;
+use crate::{app::TimerState, models::Duration};
 
 #[derive(Properties, PartialEq)]
 pub struct TimerProperties {
@@ -13,7 +12,6 @@ pub struct TimerProperties {
 pub fn Timer(props: &TimerProperties) -> Html {
     let state = props.state;
     let duration = props.duration;
-    let duration = format!("{}.{:03}", duration.as_secs(), duration.subsec_millis());
 
     html! {
         <>
@@ -23,7 +21,7 @@ pub fn Timer(props: &TimerProperties) -> Html {
         }"}
         </style>
         <div class={classes!((state == TimerState::Pending).then(||"pending"))}>
-            {&(*duration)}
+            {duration}
         </div>
         </>
     }

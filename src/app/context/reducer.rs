@@ -1,9 +1,8 @@
 use std::rc::Rc;
 
-use instant::Duration;
 use yew::Reducible;
 
-use crate::models::cube_royale::{InMemoryCubeRoyale, CubeRoyale};
+use crate::models::{InMemoryCubeRoyale, CubeRoyale, Duration};
 use CubeRoyaleReducibleAction::*;
 
 pub enum CubeRoyaleReducibleAction {
