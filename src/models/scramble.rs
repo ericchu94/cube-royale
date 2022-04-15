@@ -1,5 +1,4 @@
-use std::fmt::{Formatter, Result, Display};
-
+use std::fmt::{Formatter, Display, Result};
 use rand::prelude::*;
 use rand::distributions::Standard;
 
@@ -49,6 +48,7 @@ impl Display for Face {
     }
 }
 
+#[derive(PartialEq, Clone, Copy)]
 enum Turn {
     Clockwise,
     Half,
@@ -79,33 +79,54 @@ impl Display for Turn {
     }
 }
 
+#[derive(PartialEq, Clone, Copy)]
+struct Move(Face, Turn);
 
-fn random_move() -> (Face, Turn) {
-    (random::<Face>(), random::<Turn>())
-}
-
-pub fn generate_scramble() -> String {
-    let mut scramble: Vec<(Face, Turn)> = vec![];
-
-    while scramble.len() < 20 {
-        let m = random_move();
-        if !scramble.is_empty() && scramble[scramble.len() - 1].0 == m.0 {
-            continue;
-        }
-        if scramble.len() > 1 && scramble[scramble.len() - 1].0.is_opposite(m.0) && scramble[scramble.len() - 2].0 == m.0 {
-            continue;
-        }
-
-        scramble.push(m);
+impl Distribution<Move> for Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Move {
+        Move(rng.gen::<Face>(), rng.gen::<Turn>())
     }
-
-    scramble.into_iter().map(|(f, t)| format!("{f}{t}")).collect::<Vec<String>>().join(" ")
 }
 
-#[cfg(test)]
-mod test {
-    #[test]
-    fn test() {
-        println!("{}", super::generate_scramble());
+impl Display for Move {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "{}{}", self.0, self.1)
+    }
+}
+
+#[derive(PartialEq, Clone)]
+pub struct Scramble {
+    moves: Vec<Move>,
+}
+
+impl Default for Scramble {
+    fn default() -> Self {
+        random()
+    }
+}
+
+impl Distribution<Scramble> for Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Scramble {
+        let mut moves: Vec<Move> = vec![];
+        
+        while moves.len() < 20 {
+            let m = rng.gen::<Move>();
+            if !moves.is_empty() && moves[moves.len() - 1].0 == m.0 {
+                continue;
+            }
+            if moves.len() > 1 && moves[moves.len() - 1].0.is_opposite(m.0) && moves[moves.len() - 2].0 == m.0 {
+                continue;
+            }
+
+            moves.push(m);
+        }
+
+        Scramble { moves }
+    }
+}
+
+impl Display for Scramble {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "{}", self.moves.iter().map(|m| format!("{m}")).collect::<Vec<String>>().join(" "))
     }
 }

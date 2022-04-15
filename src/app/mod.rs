@@ -1,3 +1,4 @@
+use context::use_cube_royale_reducer;
 use gloo::events::EventListener;
 use gloo::timers::callback::Interval;
 use gloo::utils::document;
@@ -6,9 +7,10 @@ use wasm_bindgen::JsCast;
 use web_sys::KeyboardEvent;
 use yew::prelude::*;
 
+use crate::app::context::CubeRoyaleContext;
 use crate::players::Players;
-use crate::scramble::Scramble;
 use crate::timer::Timer;
+use crate::scramble::Scramble;
 
 #[derive(PartialEq, Clone, Copy)]
 pub enum TimerState {
@@ -20,8 +22,14 @@ pub enum TimerState {
 
 use TimerState::*;
 
+pub mod hooks;
+pub mod context;
+
+
 #[function_component]
 pub fn App() -> Html {
+    let cube_royale_context = use_cube_royale_reducer();
+
     let state = use_state(|| Idle);
     let start_time = use_state(Instant::now);
     let duration = use_state(Duration::default);
@@ -87,10 +95,10 @@ pub fn App() -> Html {
     }
 
     html! {
-        <>
+        <ContextProvider<CubeRoyaleContext> context={cube_royale_context}>
             <Scramble state={*state} />
             <Timer state={*state} duration={*duration} />
             <Players state={*state} duration={*duration} />
-        </>
+        </ContextProvider<CubeRoyaleContext>>
     }
 }

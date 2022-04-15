@@ -3,6 +3,8 @@ mod scramble;
 mod timer;
 mod players;
 
+mod models;
+
 use app::App;
 
 fn main() {
