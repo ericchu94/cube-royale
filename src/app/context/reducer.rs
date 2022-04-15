@@ -1,11 +1,13 @@
 use std::rc::Rc;
 
+use instant::Duration;
 use yew::Reducible;
 
 use crate::models::cube_royale::{InMemoryCubeRoyale, CubeRoyale};
+use CubeRoyaleReducibleAction::*;
 
 pub enum CubeRoyaleReducibleAction {
-    NextScramble,
+    CompleteSolve { duration: Duration },
 }
 
 #[derive(PartialEq, Clone, Default)]
@@ -18,7 +20,7 @@ impl Reducible for CubeRoyaleReducible {
         let mut next = (*self).clone();
         let cube_royale = &mut next.0;
         match action {
-            NextScramble => cube_royale.next_scramble(),
+            CompleteSolve { duration } => cube_royale.complete_solve(duration),
         }
         next.into()
     }

@@ -11,12 +11,12 @@ mod reducer;
 pub struct CubeRoyaleContext(UseReducerHandle<CubeRoyaleReducible>);
 
 impl CubeRoyale for CubeRoyaleContext {
-    fn next_scramble(&mut self) {
-        self.0.dispatch(NextScramble);
-    }
-
     fn get_scramble(&self) -> &Scramble {
         self.0.0.get_scramble()
+    }
+
+    fn complete_solve(&mut self, duration: instant::Duration) {
+        self.0.dispatch(CompleteSolve { duration });
     }
 }
 

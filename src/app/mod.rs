@@ -8,6 +8,7 @@ use web_sys::KeyboardEvent;
 use yew::prelude::*;
 
 use crate::app::context::CubeRoyaleContext;
+use crate::models::cube_royale::CubeRoyale;
 use crate::players::Players;
 use crate::timer::Timer;
 use crate::scramble::Scramble;
@@ -56,6 +57,8 @@ pub fn App() -> Html {
     }
 
     {
+        let duration = duration.clone();
+        let mut cube_royale_context = cube_royale_context.clone();
         let state = state.clone();
         let start_time = start_time.clone();
         use_effect(move || {
@@ -65,7 +68,10 @@ pub fn App() -> Html {
 
                 if e.key_code() == 32 {
                     let next_state = match *state {
-                        Stopped => Idle,
+                        Stopped => {
+                            cube_royale_context.complete_solve(*duration);
+                            Idle
+                        },
                         Pending => Running,
                         _ => Idle,
                     };
@@ -96,7 +102,7 @@ pub fn App() -> Html {
 
     html! {
         <ContextProvider<CubeRoyaleContext> context={cube_royale_context}>
-            <Scramble state={*state} />
+            <Scramble />
             <Timer state={*state} duration={*duration} />
             <Players state={*state} duration={*duration} />
         </ContextProvider<CubeRoyaleContext>>
