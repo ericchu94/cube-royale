@@ -1,5 +1,7 @@
 use std::fmt::{Display, Formatter, Result};
 
+use rand::{prelude::*, distributions::Standard};
+
 use instant::Duration as InstantDuration;
 
 #[derive(Default, PartialEq, PartialOrd, Clone, Copy)]
@@ -20,6 +22,12 @@ impl Display for Duration {
 impl From<InstantDuration> for Duration {
     fn from(duration: InstantDuration) -> Self {
         Self(duration)
+    }
+}
+
+impl Distribution<Duration> for Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Duration {
+        Duration::from_millis(rng.gen_range(4000..30000))
     }
 }
 

@@ -7,6 +7,7 @@ use CubeRoyaleReducibleAction::*;
 
 pub enum CubeRoyaleReducibleAction {
     CompleteSolve { duration: Duration },
+    PrepareSolve,
 }
 
 #[derive(PartialEq, Clone, Default)]
@@ -20,6 +21,7 @@ impl Reducible for CubeRoyaleReducible {
         let cube_royale = &mut next.0;
         match action {
             CompleteSolve { duration } => cube_royale.complete_solve(duration),
+            PrepareSolve => cube_royale.prepare_solve(),
         }
         next.into()
     }
