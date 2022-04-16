@@ -45,10 +45,7 @@ pub fn App() -> Html {
 
                 if e.key_code() == 32 {
                     let next_state = match *state {
-                        Idle => {
-                            cube_royale_context.prepare_solve();
-                            Pending
-                        },
+                        Idle => Pending,
                         Running => Stopped,
                         _ => Pending,
                     };
@@ -76,7 +73,10 @@ pub fn App() -> Html {
                             cube_royale_context.complete_solve(*duration);
                             Idle
                         },
-                        Pending => Running,
+                        Pending => {
+                            cube_royale_context.prepare_solve();
+                            Running
+                        },
                         _ => Idle,
                     };
                     state.set(next_state);
@@ -95,8 +95,7 @@ pub fn App() -> Html {
             let interval = Interval::new(1, move || match *state {
                 Running => {
                     duration.set(start_time.elapsed().into());
-                }
-                Pending => duration.set(Duration::default()),
+                },
                 _ => {}
             });
 

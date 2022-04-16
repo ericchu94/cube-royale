@@ -11,7 +11,7 @@ pub struct TimerProperties {
 #[function_component]
 pub fn Timer(props: &TimerProperties) -> Html {
     let state = props.state;
-    let duration = props.duration;
+    let duration = if state == TimerState::Pending { Duration::default() } else { props.duration };
 
     html! {
         <>

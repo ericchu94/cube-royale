@@ -60,6 +60,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
         .player {
             border: 1px solid black;
             width: 80px;
+            height: 40px;
             text-align: center;
             margin: 1px;
             opacity: 30%;
@@ -86,7 +87,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
             {players.iter().map(|p| {
                 let status = match p {
                     None => "eliminated",
-                    Some(p) => if p.duration < duration { "passed" } else { "failed" },
+                    Some(p) => if p.duration < duration { "passed" } else if state == TimerState::Pending { "eliminated" } else { "failed" },
                 };
                 html! {
                     <div class={classes!(
@@ -103,7 +104,7 @@ pub fn Players(props: &PlayersProperties) -> Html {
                                 </div>
                                 <div>
                                     {
-                                        if state == TimerState::Idle || d <= duration {
+                                        if state == TimerState::Idle || d <= duration && state != TimerState::Pending {
                                             format!("{}", d)
                                         } else {
                                             String::from("?")
