@@ -1,5 +1,4 @@
-pub fn names() -> [&'static str; 100] {
-    [
+pub const NAMES: [&str; 100] = [
         "James",
         "Mary",
         "Robert",
@@ -100,5 +99,4 @@ pub fn names() -> [&'static str; 100] {
         "Ruth",
         "Jerry",
         "Maria",
-    ]
-}
+    ];

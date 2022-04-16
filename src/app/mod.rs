@@ -36,6 +36,7 @@ pub fn App() -> Html {
     let duration = use_state(Duration::default);
 
     {
+        let mut cube_royale_context = cube_royale_context.clone();
         let state = state.clone();
         use_effect(move || {
             let document = document();
@@ -44,7 +45,10 @@ pub fn App() -> Html {
 
                 if e.key_code() == 32 {
                     let next_state = match *state {
-                        Stopped => Pending,
+                        Idle => {
+                            cube_royale_context.prepare_solve();
+                            Pending
+                        },
                         Running => Stopped,
                         _ => Pending,
                     };
